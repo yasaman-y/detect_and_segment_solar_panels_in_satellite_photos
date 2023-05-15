@@ -15,7 +15,7 @@ warnings.filterwarnings("ignore")
 import os
 from sys import path
 path.append(os.path.join(os.getcwd(), '')) 
-from function import * 
+# from function import * 
 
 
 from sklearn.metrics import accuracy_score, confusion_matrix, RocCurveDisplay
