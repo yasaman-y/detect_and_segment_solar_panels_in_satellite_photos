@@ -21,3 +21,6 @@ a CNN model to detect and segment solar panels in satellite photos
 
 
 CNNs are quite powerful but without data, there is not much you can do.
+
+
+transfer-learning techniques to train our own model, evaluate its performances, use it for inference and even convert it to other file formats such as ONNX and TensorRT.
