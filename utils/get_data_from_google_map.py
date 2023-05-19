@@ -1,12 +1,47 @@
 
 #  pip install turfpy
-
+# pip install geopandas
+# pip install earthengine-api
+# pip install folium
+# pip install sentinelhub
+# pip install gpd
+# pip install georaster
+# pip install folium Pillow
+# pip install geemap
+# pip install turfpy
 
 from turfpy.measurement import bbox
 import math
 from PIL import Image
 import requests
 import os
+from turfpy.measurement import bbox
+import math
+from PIL import Image
+import json 
+import requests
+import warnings
+warnings.filterwarnings("ignore")
+
+import os
+from sys import path
+path.append(os.path.join(os.getcwd(), '')) 
+
+# from geopandas import GeoSeries, GeoDataFrame
+# import json
+# import time 
+# import georaster
+# import geemap
+# import sentinelhub
+# import gpd
+# import geopandas as gpd
+# from folium import plugins
+# import ee
+# import folium
+# import matplotlib.pyplot as plt
+
+
+
 path = 'data/google_map'
 
 def num2deg(xtile, ytile, zoom):
@@ -15,6 +50,7 @@ def num2deg(xtile, ytile, zoom):
     lat_rad = math.atan(math.sinh(math.pi * (1 - 2 * ytile / n)))
     lat_deg = math.degrees(lat_rad)
     return (lat_deg, lon_deg)
+
 
 def getXY(lng, lat, zoom):
     tile_size = 256
@@ -45,7 +81,6 @@ def download_im(geometry, zoom):
     w = (end_x+1 - start_x) * 256
     h = (end_y+1 - start_y) * 256
     result = Image.new("RGB", (w, h))
-    result = result.resize((2000, 2000))
 
     for x in range(start_x, end_x+1):
         for y in range(start_y, end_y+1):
@@ -69,43 +104,62 @@ def download_im(geometry, zoom):
     return result, start_x, start_y, end_x, end_y, w, h
 
 
-# geometry = {
-#         "coordinates": [
-#           [
-#             [
-#               54.360723589073814,
-#               31.900557381839263
-#             ],
-#             [
-#               54.360723589073814,
-#               31.89907003779554
-#             ],
-#             [
-#               54.36249344408964,
-#               31.89907003779554
-#             ],
-#             [
-#               54.36249344408964,
-#               31.900557381839263
-#             ],
-#             [
-#               54.360723589073814,
-#               31.900557381839263
-#             ]
-#           ]
-#         ],
-#         "type": "Polygon"
-#       }
+#--------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------
 
-geometry = {'coordinates': [[[-94.57260260212433, 39.14019525724463],
-       [-94.57071164476883, 39.14019525724463],
-       [-94.57071164476883, 39.141118918340055],
-       [-94.57260260212433, 39.141118918340055],
-       [-94.57260260212433, 39.14019525724463]]],
-     'type': 'Polygon'}
-# zoom = 18
-zoom = 21
+# #test to get some polygon
+# geometry = {'coordinates': [[[-94.57260260212433, 39.14019525724463],
+#        [-94.57071164476883, 39.14019525724463],
+#        [-94.57071164476883, 39.141118918340055],
+#        [-94.57260260212433, 39.141118918340055],
+#        [-94.57260260212433, 39.14019525724463]]],
+#      'type': 'Polygon'}
+# zoom = 22
+# download_im(geometry, zoom)
+#--------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------
+
+# edite multipolygon geojson to polygons
+list_files = os.listdir("geojason") 
+
+l = []
+list_of_poly = []
+
+for file_ in list_files:
+  flag = -1
+  print(file_)
+  with open(f'geojason/{file_}') as f:
+    data = json.load(f)
+    l.append(data)
+
+  try:
+    x = data["features"][0]["geometry"]["coordinates"][0]
+    flag = 1
+  except Exception as er:
+    flag = 0
+    continue
+
+  if flag == 0:
+    x = data['features'][0]['geometry']["geometries"][1]["coordinates"]
+    list_of_poly.append(x)
+
+
+  if flag == 1:
+    x = data["features"][0]["geometry"]["coordinates"]
+    print(len(x))
+    for i in range(0,len(x)):
+      dic_0 = {
+          'coordinates': data["features"][0]["geometry"]["coordinates"][i],
+          'type': 'Polygon'
+          }
+      list_of_poly.append(dic_0)
 
 
 
-download_im(geometry, zoom)
+for poly in list_of_poly:
+  zoom = 19
+  download_im(poly, zoom)

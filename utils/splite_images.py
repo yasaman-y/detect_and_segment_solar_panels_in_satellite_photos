@@ -1,6 +1,5 @@
 
 import os
-# import image_slicer
 import numpy as np
 from PIL import Image
 from itertools import product
@@ -78,8 +77,9 @@ def tile(filename, dir_in, dir_out, d):
 
 
 
-list_files = os.listdir("data/google_map/") 
+#for splite those images from polygon to small size
 
+list_files = os.listdir("data/google_map/") 
 
 for file_ in list_files:
     path = "data/google_map_splite_data"
