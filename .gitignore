@@ -1,4 +1,7 @@
 articles/
 old/
 data/
-
+detectron2/
+logs/
+usless/
+test_images/
