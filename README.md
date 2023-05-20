@@ -1,5 +1,18 @@
 # detect_and_segment_solar_panels_in_satellite_photos
+---
 
+
+```
+Please note that the order of codes, files and folders in this project has changed over time. Here are the steps I followed:
+*   Searching,
+*   Coding,
+*   Analyzing the results and refining the approach,
+Through repeated iterations, I have learned valuable lessons and adjusted the project structure accordingly. Despite the changes, I believe that my report will be well-suited to the current structure. Additionally, this is the first time I have written tests for my code.
+```
+
+
+
+---
 
 
 **This project was completed in several steps as outlined below:**
@@ -50,6 +63,9 @@ Fast R-CNN:
 "bbox/APm": 27.348813899395747,
 "bbox/APs": 7.722103522445104, 
 "iteration": 500
+
+
+"AP50": 52.38 %, 
 -----------------------------------------------------------------------
 YOLOv8
 -----------------------------------------------------------------------
@@ -67,6 +83,8 @@ val/dfl_loss:1.3913,
 lr/pg0: 0.003466,         
 lr/pg1:   0.003466   
 lr/pg2:0.003466
+
+mAP50(B): 62.464 %
 -----------------------------------------------------------------------
 
 **steps of project**
@@ -79,9 +97,15 @@ I also searched for a suitable dataset, but unfortunately, I couldn't find any a
 I attempted to use satellite images like Sentinel-2 and Landsat, but due to their low resolution, I decided to use Google Maps to collect the dataset. 
 In this step, I used Google Earth Engine and Python to capture images from regions that contained roofs and solar panels.
 
-My dataset encountered some challenges. Firstly, due to limitations in collecting a sufficient number of solar panel images compared to roofs, the final dataset ended up being unbalanced. However, given the time constraints, it was the best I could achieve.
+My dataset encountered some challenges.
+Firstly, due to limitations in collecting a sufficient number of solar panel images compared to roofs, the final dataset ended up being unbalanced. However, given the time constraints, it was the best I could achieve.
 Another issue with my dataset is the geographical bias. The majority of the images were collected from America and Europe. As a result, the model was trained on data that may not accurately represent the diverse appearances of roofs in Asia or Africa, due to variations in architecture and weather conditions. It is important to acknowledge these limitations when interpreting the results of the trained model.
 
 In the next step, I had to annotate and label the roofs and solar panels in the images. To simplify this task, I discovered an model called SAM (Segment Everything by facebook). Additionally, I found an online platform called roboflow.com that leveraged the SAM algorithm, making the annotation process much easier. So I created two datasets: one in YOLO format for  traning YOLOv8 model and another in COCO dataset format for training the Fast R-CNN model using Detectron2.
+
+
 Next, I performed fine-tuning of a pre-trained model using my created dataset and evaluated the results. Due to resource limitations, I utilized Google Colab to train the model on a GPU, which restricted my ability to extensively modify hyperparameters or increase the number of training epochs.
+
+
+
 In the last step, I put everything together and created a notebook to test the fine-tuned model. This allowed me to compare the results obtained by these two models. In my evaluation, I found that Detectron2 provided a combination of speed and accuracy, earning a perfect score of 20/20
